@@ -10,4 +10,45 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.mapps.seproject.RegisterActivity">
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/etRegEmail"
+        android:hint="E-Mail ID"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="23dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:layout_marginTop="15dp"
+        android:id="@+id/etRegPassword"
+        android:hint="Password"
+        android:layout_below="@+id/etRegEmail"
+        android:layout_alignParentStart="false" />
+
+    <Button
+        android:text="Register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bRegister"
+        android:layout_marginTop="28dp"
+        android:layout_below="@+id/etRegPassword"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Login Here"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/textLogin"
+        android:textSize="24sp" />
+
+
 </RelativeLayout>
