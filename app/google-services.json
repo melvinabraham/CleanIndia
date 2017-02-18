@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "990195871014",
+    "firebase_url": "https://se-project-4a6c6.firebaseio.com",
+    "project_id": "se-project-4a6c6",
+    "storage_bucket": "se-project-4a6c6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:990195871014:android:8045fa84fbe6c9f3",
+        "android_client_info": {
+          "package_name": "com.mapps.seproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "990195871014-p3cmfdl1ec1thi8uqkk86hjs09ojenet.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuY6WK8Kcf7sKXfo8P3Io8NGqPyZtI9H0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
