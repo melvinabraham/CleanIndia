@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,7 +34,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_register);
 
 
+
         firebaseAuth = FirebaseAuth.getInstance();
+
+
         if(firebaseAuth.getCurrentUser() != null)   {
 
             finish();
@@ -91,31 +95,42 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         progress.show();
 
 
+        try {
 
-        firebaseAuth.createUserWithEmailAndPassword(mail,pass)                                    // Create New Entry
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+            firebaseAuth.createUserWithEmailAndPassword(mail, pass)                                    // Create New Entry
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        if(task.isSuccessful()) {                                                 // On Successful Registration
+                            if (task.isSuccessful()) {                                                 // On Successful Registration
 
 
-                            Toast.makeText(RegisterActivity.this, "Registered Successfuly", Toast.LENGTH_SHORT).show();
-                            progress.hide();
+                                Toast.makeText(RegisterActivity.this, "Registered Successfuly", Toast.LENGTH_SHORT).show();
+                                progress.hide();
+
+
+                            } else {
+
+
+                                Toast.makeText(RegisterActivity.this, "Failed to Register", Toast.LENGTH_SHORT).show();
+                                progress.hide();
+                                //task.getException().getMessage();
+
+                            }
 
 
                         }
+                    });
 
-                        else {
+        }
 
-                            Toast.makeText(RegisterActivity.this, "Failed to Register", Toast.LENGTH_SHORT).show();
-                                    //task.getException().getMessage();
+        catch (Exception e) {
 
-                        }
+                e.printStackTrace();
+                Log.i("Registration Fail: ",e.toString());
 
 
-                    }
-                });
+        }
 
 
 

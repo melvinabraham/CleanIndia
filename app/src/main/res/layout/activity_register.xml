@@ -42,13 +42,25 @@
         android:layout_alignParentStart="true" />
 
     <TextView
-        android:text="Login Here"
+        android:text="Already have an account?"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:id="@+id/tvHaveAccountReg"
+        android:layout_below="@+id/bRegister"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="51dp" />
+
+    <TextView
+        android:text="Sign In"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/textLogin"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:background="@color/common_google_signin_btn_text_light_disabled"
+        android:layout_marginTop="36dp"
+        android:layout_alignTop="@+id/tvHaveAccountReg"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>

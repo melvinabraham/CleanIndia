@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -82,36 +83,44 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         progressDialog.setMessage("Logging IN");
         progressDialog.show();
 
-        firebaseAuth.signInWithEmailAndPassword(mail,pass)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+        try {
 
-                        if(task.isSuccessful())    {
+            firebaseAuth.signInWithEmailAndPassword(mail, pass)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                                                                         // Successful Log In
-                            finish();
-                            startActivity(new Intent(getApplicationContext(),UserActivity.class));
-                            progressDialog.hide();
+                            if (task.isSuccessful()) {
+
+                                // Successful Log In
+                                finish();
+                                startActivity(new Intent(getApplicationContext(), UserActivity.class));
+                                progressDialog.hide();
+
+
+                            } else {
+
+
+                                progressDialog.hide();                                      // Unsuccessful Log In
+                                Toast.makeText(LoginActivity.this, "Incorrect Details", Toast.LENGTH_SHORT).show();
+                                return;
+
+
+                            }
 
 
                         }
-
-                        else    {
-
-
-                            progressDialog.hide();                                      // Unsuccessful Log In
-                            Toast.makeText(LoginActivity.this, "Incorrect Details", Toast.LENGTH_SHORT).show();
-                            return;
+                    });
+        }
 
 
-                        }
+        catch (Exception e) {
+
+            e.printStackTrace();
+            Log.i("Login Fail: ",e.toString());
 
 
-
-
-                    }
-                });
+        }
 
     }
 
