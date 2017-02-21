@@ -6,7 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +22,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     Button bSignOut;
     Button bComposeMail;
     TextView welcome;
+    Spinner dropdown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +44,44 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         FirebaseUser user = firebaseAuth.getCurrentUser();                                  // Get user
-        welcome.setText("Welcome "+user.getEmail());                                        // Get Email
+        welcome.setText("Welcome "+user.getEmail());// Get Emailx
+
+        dropdown = (Spinner) findViewById(R.id.spSelectCitiy);
+        String [] items = new String[]{"Coimbatore","Chennai"};
+        ArrayAdapter <String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,items);
+        dropdown.setAdapter(arrayAdapter);
+
+
 
 
         bSignOut.setOnClickListener(this);                                                    // Start listener on Button
         bComposeMail.setOnClickListener(this);
+        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                switch (position)  {
+
+                    case  0:
+                        // setCityCoimbatore();
+                        Log.i("City: ","Coimbatore");
+                        break;
+
+                    case 1:
+                        // setCityChennai();
+                        Log.i("City:","Chennai");
+                        break;
+
+                }
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
     }
@@ -115,6 +152,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-
     }
+
+
 }
