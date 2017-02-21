@@ -23,15 +23,23 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     Button bComposeMail;
     TextView welcome;
     Spinner dropdown;
+    TextView emailText;
+    int flag =0;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+
 
         welcome = (TextView) findViewById(R.id.tvWelcome);
         bSignOut = (Button) findViewById(R.id.bSignOut);
         bComposeMail = (Button) findViewById(R.id.bComposeMail);
+        emailText = (TextView) findViewById(R.id.tvEmailMessage);
+
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -44,12 +52,14 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         FirebaseUser user = firebaseAuth.getCurrentUser();                                  // Get user
-        welcome.setText("Welcome "+user.getEmail());// Get Emailx
+        welcome.setText("Welcome "+user.getEmail());                                        // Get Email
 
         dropdown = (Spinner) findViewById(R.id.spSelectCitiy);
         String [] items = new String[]{"Coimbatore","Chennai"};
         ArrayAdapter <String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,items);
         dropdown.setAdapter(arrayAdapter);
+
+
 
 
 
@@ -65,11 +75,13 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     case  0:
                         // setCityCoimbatore();
                         Log.i("City: ","Coimbatore");
+                        flag =0;
                         break;
 
                     case 1:
                         // setCityChennai();
                         Log.i("City:","Chennai");
+                        flag = 1;
                         break;
 
                 }
@@ -90,16 +102,33 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     public void composeEmail()  {
 
         Log.i("Sending Email","");
-        String [] TO = {""};
-        String [] CC = {""};
+        String[] TO;
+        if (flag == 0) {
+
+             TO = new String[]{"commr.coimbatore@tn.gov.in"};
+
+        }
+        else {
+            TO = new String[]{"mayor@chennaicorporation.gov.in"};
+        }
+            String [] CC = {""};
+
+        String mailText = emailText.getText().toString();
+
 
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
 
         emailIntent.setData(Uri.parse("mailto"));
         emailIntent.setType("text/plain");
-        emailIntent.putExtra(Intent.EXTRA_EMAIL,TO);
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT,"Your Subject");
-        emailIntent.putExtra(Intent.EXTRA_TEXT,"Type your text here");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+        if ( flag == 0) {
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Regarding cleanliness in Coimbatore");
+        }
+        else {
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Regarding cleanliness in Chennai");
+
+        }
+        emailIntent.putExtra(Intent.EXTRA_TEXT,mailText);
 
         try {
 

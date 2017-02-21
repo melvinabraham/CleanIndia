@@ -26,6 +26,23 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
 
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spSelectCitiy"
+        android:layout_marginTop="31dp"
+        android:layout_below="@+id/bSignOut"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="Add Image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bAddImage"
+        android:layout_above="@+id/bComposeMail"
+        android:layout_alignEnd="@+id/bComposeMail"
+        android:layout_alignStart="@+id/bComposeMail" />
+
     <Button
         android:text="Compose Email"
         android:layout_width="wrap_content"
@@ -34,12 +51,14 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
-    <Spinner
+    <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/spSelectCitiy"
-        android:layout_marginTop="31dp"
-        android:layout_below="@+id/bSignOut"
-        android:layout_alignParentStart="true" />
+        android:layout_height="250dp"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/tvEmailMessage"
+        android:hint="Enter your complaint here" />
 
 </RelativeLayout>
