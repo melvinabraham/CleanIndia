@@ -90,6 +90,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
+
                             if (task.isSuccessful()) {
 
                                 // Successful Log In
@@ -102,7 +103,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
 
 
                                 progressDialog.hide();                                      // Unsuccessful Log In
-                                Toast.makeText(LoginActivity.this, "Incorrect Details", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
                                 return;
 
 
@@ -113,14 +114,14 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                     });
         }
 
-
         catch (Exception e) {
 
             e.printStackTrace();
-            Log.i("Login Fail: ",e.toString());
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
 
 
         }
+
 
     }
 
