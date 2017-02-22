@@ -1,5 +1,6 @@
 package com.mapps.seproject;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.media.Image;
 import android.net.Uri;
@@ -21,30 +22,17 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class UserActivity extends AppCompatActivity implements View.OnClickListener {
 
-    FirebaseAuth firebaseAuth;
     Button bSignOut;
-    Button bComposeMail;
     TextView welcome;
-    Spinner dropdown;
-    TextView emailText;
-    int flag =0;
-    Button bAddImage;
-    Uri imageUri;
+    FirebaseAuth firebaseAuth;
+    Button bComposeScreen;
 
-    private static int RESULT_LOAD_IMAGE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
-
-
-        welcome = (TextView) findViewById(R.id.tvWelcome);
-        bSignOut = (Button) findViewById(R.id.bSignOut);
-        bComposeMail = (Button) findViewById(R.id.bComposeMail);
-        emailText = (TextView) findViewById(R.id.tvEmailMessage);
-        bAddImage = (Button) findViewById(R.id.bAddImage);
 
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -57,156 +45,37 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
         }
 
-        FirebaseUser user = firebaseAuth.getCurrentUser();                                  // Get user
-        welcome.setText("Welcome "+user.getEmail());                                        // Get Email
+        FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        dropdown = (Spinner) findViewById(R.id.spSelectCitiy);
-        String [] items = new String[]{"Coimbatore","Chennai"};
-        ArrayAdapter <String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,items);
-        dropdown.setAdapter(arrayAdapter);
+        welcome = (TextView) findViewById(R.id.tvWelcome);
+        welcome.setText("Welcome "+user.getEmail());                                        // Get Email'
 
+        bSignOut = (Button) findViewById(R.id.bSignOut);
+        bSignOut.setOnClickListener(this);
 
-
-
-
-        bAddImage.setOnClickListener(this);
-        bSignOut.setOnClickListener(this);                                                    // Start listener on Button
-        bComposeMail.setOnClickListener(this);
-        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                switch (position)  {
-
-                    case  0:
-                        // setCityCoimbatore();
-                        Log.i("City: ","Coimbatore");
-                        flag =0;
-                        break;
-
-                    case 1:
-                        // setCityChennai();
-                        Log.i("City:","Chennai");
-                        flag = 1;
-                        break;
-
-                }
-
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-
+        bComposeScreen = (Button) findViewById(R.id.bGotoCompose);
+        bComposeScreen.setOnClickListener(this);
     }
 
-
-    public void composeEmail()  {
-
-        Log.i("Sending Email","");
-        String[] TO;
-        if (flag == 0) {
-
-             TO = new String[]{"commr.coimbatore@tn.gov.in"};
-
-        }
-        else {
-            TO = new String[]{"mayor@chennaicorporation.gov.in"};
-        }
-            String [] CC = {""};
-
-        String mailText = emailText.getText().toString();
-
-
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
-
-        emailIntent.setData(Uri.parse("mailto"));
-        emailIntent.setType("text/plain");
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
-        if ( flag == 0) {
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Regarding cleanliness in Coimbatore");
-        }
-        else {
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Regarding cleanliness in Chennai");
-
-        }
-        emailIntent.putExtra(Intent.EXTRA_TEXT,mailText);
-        emailIntent.setType("application/image");
-        emailIntent.putExtra(Intent.EXTRA_STREAM,imageUri);
-
-        try {
-
-            startActivity(Intent.createChooser(emailIntent,"Send Mail..."));
-            Log.i("Finished","");
-
-        }
-
-        catch (android.content.ActivityNotFoundException ex)    {
-
-            Toast.makeText(getApplicationContext(), "There is no email client installed.", Toast.LENGTH_SHORT).show();
-
-        }
-        catch (Exception e) {
-
-            e.printStackTrace();
-        }
-
-
-
-
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data!=null)   {
-
-            imageUri = data.getData();
-
-
-        }
-
-
-
-    }
 
     @Override
     public void onClick(View v) {
 
-        if(v == bSignOut) {
+        if(v == bSignOut)   {
+
 
             firebaseAuth.signOut();                                                         // sign out
             finish();
-            startActivity(new Intent(this,LoginActivity.class));                        // Go back to login activity
-
-        }
-
-        if(v == bComposeMail)   {
-
-
-            Log.i("Clicked","Compose");
-            composeEmail();
+            startActivity(new Intent(this,LoginActivity.class));                        // Go back to login activitys
 
 
         }
 
-        if(v == bAddImage)  {
+        if(v == bComposeScreen) {
 
-            Intent cameraIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-            startActivityForResult(cameraIntent,RESULT_LOAD_IMAGE);
+            finish();
+            startActivity(new Intent(this,ComposeMail.class));
 
         }
-
-
-
-
     }
-
-
 }
