@@ -41,10 +41,11 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         registerText= (TextView) findViewById(R.id.textRegister);
         progressDialog = new ProgressDialog(this);
         firebaseAuth = FirebaseAuth.getInstance();
+
         if(firebaseAuth.getCurrentUser() != null)   {
 
             finish();
-            startActivity(new Intent(getApplicationContext(),UserActivity.class));              // If already logged in
+            startActivity(new Intent(getApplicationContext(),MainActivity.class));              // If already logged in
 
 
 
@@ -95,7 +96,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
 
                                 // Successful Log In
                                 finish();
-                                startActivity(new Intent(getApplicationContext(), UserActivity.class));
+                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                 progressDialog.hide();
 
 

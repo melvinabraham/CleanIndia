@@ -41,7 +41,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if(firebaseAuth.getCurrentUser() != null)   {
 
             finish();
-            startActivity(new Intent(getApplicationContext(),UserActivity.class));          // If user is already logged in
+            startActivity(new Intent(getApplicationContext(),MainActivity.class));          // If user is already logged in
 
 
         }
