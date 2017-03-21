@@ -3,6 +3,7 @@ package com.mapps.seproject;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -27,13 +28,13 @@ public class CameraFragment extends Fragment {
 
     private Uri file;
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    ImageView mImageView;
+    View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_camera, container, false);
+        view = inflater.inflate(R.layout.fragment_camera, container, false);
 
 
         return view;
@@ -63,13 +64,21 @@ public class CameraFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        ImageView mImageView = (ImageView) view.findViewById(R.id.imageView);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             if(imageBitmap==null){
 
+                // No image was taken
+
+
             }else {
+
+
                 mImageView.setImageBitmap(imageBitmap);
+
             }
         }
     }
@@ -91,10 +100,6 @@ public class CameraFragment extends Fragment {
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
-
-
-
-
 
 
 
