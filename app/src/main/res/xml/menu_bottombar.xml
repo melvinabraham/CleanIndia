@@ -3,23 +3,22 @@
 
     <tab
         id="@+id/user_activity"
-        icon="@drawable/ic_favorites"
-        title="Favorites"
+        icon="@drawable/ic_home"
         activeColor="#FFFFFF"
 
         />
     <tab
         id="@+id/camera_activity"
-        icon="@drawable/ic_nearby"
-        title="Nearby"
+        icon="@drawable/ic_camera"
         activeColor="#FFFFFF"
+        barColorWhenSelected = "#9932CC"
 
         />
     <tab
         id="@+id/compose_mail"
-        icon="@drawable/ic_friends"
-        title="Friends"
+        icon="@drawable/ic_send"
         activeColor="#FFFFFF"
+        barColorWhenSelected="#000000"
 
         />
 
