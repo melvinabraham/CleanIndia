@@ -17,8 +17,7 @@
         android:id="@+id/textRegister"
         android:textSize="24sp"
         android:layout_marginBottom="90dp"
-        android:background="@color/common_google_signin_btn_text_dark_disabled"
-        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textColor="@color/colorPrimary"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
