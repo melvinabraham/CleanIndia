@@ -37,6 +37,12 @@ public class ComposeFragment extends Fragment implements View.OnClickListener{
     private static int RESULT_LOAD_IMAGE = 1;
     private static int RESULT_MAIL = 2;
 
+    private Button b_get;
+    private com.mapps.seproject.TrackGPS gps;
+    double longitude;
+    double latitude;
+    String city;
+    String postalCode;
 
 
 
@@ -52,10 +58,11 @@ public class ComposeFragment extends Fragment implements View.OnClickListener{
         bComposeMail = (Button) view.findViewById(R.id.bComposeMail);
         emailText = (TextView) view.findViewById(R.id.tvEmailMessage);
         bAddImage = (Button) view.findViewById(R.id.bAddImage);
-
+        b_get = (Button) view.findViewById(R.id.button2);
 
         bAddImage.setOnClickListener(this);
         bComposeMail.setOnClickListener(this);
+        b_get.setOnClickListener(this);
         return view;
     }
 
@@ -139,6 +146,27 @@ public class ComposeFragment extends Fragment implements View.OnClickListener{
             Intent cameraIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
             startActivityForResult(cameraIntent,RESULT_LOAD_IMAGE);
 
+        }
+
+        //Location
+	    if(v == b_get){
+            gps = new TrackGPS(getActivity());
+
+
+            if(gps.canGetLocation()){
+
+
+                longitude = gps.getLongitude();
+                latitude = gps .getLatitude();
+                city = gps.getCity();
+                postalCode = gps.getPostalCode();
+                Toast.makeText(getActivity(),"Longitude:"+Double.toString(longitude)+"\nLatitude:"+Double.toString(latitude)+"\nCity:"+city+"\nPostal:"+postalCode,Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+
+                gps.showSettingsAlert();
+            }
         }
 
 

@@ -53,6 +53,14 @@
         android:layout_marginBottom="19dp"
         android:hint="Enter your complaint here" />
 
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tvEmailMessage"
+        android:layout_centerHorizontal="true"
+        android:text="Get Location" />
+
 
 </RelativeLayout>
     </FrameLayout>
