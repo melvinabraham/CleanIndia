@@ -8,4 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="WelcomeScreenHeaderTextStyle">
+        <item name="android:textSize">50sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginBottom">60dp</item>
+    </style>
+
 </resources>
