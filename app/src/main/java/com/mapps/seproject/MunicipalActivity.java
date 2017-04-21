@@ -32,7 +32,7 @@ public class MunicipalActivity extends AppCompatActivity {
     private ListView listView;
     private FeedListAdapter listAdapter;
     private List<FeedItem> feedItems;
-    private String URL_FEED = "http://api.androidhive.info/feed/feed.json";
+    private String URL_FEED = "https://se-project-4a6c6.firebaseapp.com/feeds/feeds.json";
 
     @SuppressLint("NewApi")
     @Override
