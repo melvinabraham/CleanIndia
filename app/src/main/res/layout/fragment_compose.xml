@@ -28,10 +28,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/bComposeMail"
+        android:layout_marginBottom="28dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="16dp"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentStart="true" />
 
     <Button
         android:text="Add Image"
@@ -39,7 +38,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/bAddImage"
         android:layout_above="@+id/bComposeMail"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="12dp" />
 
     <EditText
         android:layout_width="match_parent"
@@ -60,6 +60,15 @@
         android:layout_alignTop="@+id/tvEmailMessage"
         android:layout_centerHorizontal="true"
         android:text="Get Location" />
+
+    <Button
+        android:id="@+id/upload_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload Image"
+        android:layout_alignBaseline="@+id/bComposeMail"
+        android:layout_alignBottom="@+id/bComposeMail"
+        android:layout_toEndOf="@+id/button2" />
 
 
 </RelativeLayout>
