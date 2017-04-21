@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "990195871014-d2mucdh13god1upvggdmmsokv0evq3tl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mapps.seproject",
+            "certificate_hash": "277e910f343fde235259e5aa4505bf4b134936e0"
+          }
+        },
+        {
+          "client_id": "990195871014-lemh310h84bdtp4tpenpd036qlan3ef1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mapps.seproject",
+            "certificate_hash": "e9ecd69df9654947e97e8525cb986cc62c9c2935"
+          }
+        },
+        {
           "client_id": "990195871014-p3cmfdl1ec1thi8uqkk86hjs09ojenet.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +45,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "990195871014-p3cmfdl1ec1thi8uqkk86hjs09ojenet.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
