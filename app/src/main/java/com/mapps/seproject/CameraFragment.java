@@ -26,6 +26,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -58,6 +60,10 @@ public class CameraFragment extends Fragment {
     private Button btnCapturePicture;
     private Button choose_image;
     StorageReference mStorageRef;
+    Button signOut;
+
+    FirebaseUser user;
+    FirebaseAuth firebaseAuth;
 
 
 
@@ -66,9 +72,11 @@ public class CameraFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_camera, container, false);
+        firebaseAuth = FirebaseAuth.getInstance();
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
         btnCapturePicture = (Button) view.findViewById(R.id.btnCapturePicture);
+        signOut = (Button) view.findViewById(R.id.button3);
         choose_image = (Button) view.findViewById(R.id.choose_image);
         btnCapturePicture.setOnClickListener(new View.OnClickListener() {
 
@@ -83,6 +91,14 @@ public class CameraFragment extends Fragment {
             public void onClick(View v) {
                 Intent cameraIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
                 startActivityForResult(cameraIntent,RESULT_LOAD_IMAGE);
+            }
+        });
+
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                firebaseAuth.signOut();
+                startActivity(new Intent(getActivity(),StartActivty.class));
             }
         });
 

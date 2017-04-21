@@ -23,4 +23,13 @@
         android:layout_alignTop="@+id/btnCapturePicture"
         android:layout_marginEnd="42dp"
         android:text="Choose Image" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="108dp"
+        android:text="Button" />
 </RelativeLayout>
