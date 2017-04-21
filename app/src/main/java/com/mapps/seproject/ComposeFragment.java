@@ -1,15 +1,21 @@
 package com.mapps.seproject;
 
+import android.*;
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +35,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -43,15 +52,15 @@ public class ComposeFragment extends Fragment implements View.OnClickListener{
     Spinner dropdown;
     TextView emailText;
 
-    private StorageReference mStorageRef;
 
 
-    Button bAddImage;
+    private Uri imageUri = CameraFragment.images;
+
+
+    //Button bAddImage;
     View view;
-    private Uri imageUri;
     Button upload;
-    private static int RESULT_LOAD_IMAGE = 1;
-    private static int RESULT_MAIL = 2;
+    //private static int RESULT_LOAD_IMAGE = 1;
 
     private Button b_get;
     private com.mapps.seproject.TrackGPS gps;
@@ -73,16 +82,12 @@ public class ComposeFragment extends Fragment implements View.OnClickListener{
 
         bComposeMail = (Button) view.findViewById(R.id.bComposeMail);
         emailText = (TextView) view.findViewById(R.id.tvEmailMessage);
-        bAddImage = (Button) view.findViewById(R.id.bAddImage);
         b_get = (Button) view.findViewById(R.id.button2);
-        upload = (Button) view.findViewById(R.id.upload_image);
 
-        mStorageRef = FirebaseStorage.getInstance().getReference();
 
-        bAddImage.setOnClickListener(this);
+
         bComposeMail.setOnClickListener(this);
         b_get.setOnClickListener(this);
-        upload.setOnClickListener(this);
         return view;
     }
 
@@ -161,17 +166,7 @@ public class ComposeFragment extends Fragment implements View.OnClickListener{
 
         }
 
-        if(v == bAddImage)  {
 
-            Intent cameraIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-            startActivityForResult(cameraIntent,RESULT_LOAD_IMAGE);
-
-        }
-
-        //Upload Image
-        if(v == upload){
-            uploadFile();
-        }
 
         //Location
 	    if(v == b_get){
@@ -204,74 +199,7 @@ public class ComposeFragment extends Fragment implements View.OnClickListener{
 
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
-
-            imageUri = data.getData();
-            Toast.makeText(getActivity().getBaseContext(), "Image Added. Press Compose to transfer to Mail Window", Toast.LENGTH_SHORT).show();
-
-        }
-
-
-
-
-    }
-
-
-    //Upload image
-    private void uploadFile() {
-        //if there is a file to upload
-        if (imageUri != null) {
-            //displaying a progress dialog while upload is going on
-            final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setTitle("Uploading");
-            progressDialog.show();
-
-            StorageReference riversRef = mStorageRef.child("images/pic.jpg");
-            riversRef.putFile(imageUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            //if the upload is successfull
-                            //hiding the progress dialog
-                            progressDialog.dismiss();
-
-                            //and displaying a success toast
-                            Toast.makeText(getActivity().getBaseContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            //if the upload is not successfull
-                            //hiding the progress dialog
-                            progressDialog.dismiss();
-
-                            //and displaying error message
-                            Toast.makeText(getActivity().getBaseContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @SuppressWarnings("VisibleForTests")
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            //calculating progress percentage
-
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-
-                            //displaying percentage in progress dialog
-                            progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
-                        }
-                    });
-        }
-        //if there is not any file
-        else {
-            //you can display an error toast
-        }
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState)

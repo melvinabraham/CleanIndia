@@ -58,13 +58,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         b.setOnClickListener(this);
         loginText.setOnClickListener(this);
-
-
-
-
-
-
-
     }
 
 
@@ -88,9 +81,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return;
 
         }
-
-
-
         progress.setMessage("Registering");                                                      // Progress Bar
         progress.show();
 
