@@ -49,14 +49,16 @@ public class TrackGPS extends Service implements LocationListener {
     boolean canGetLocation = false;
 
     Location loc;
-    double latitude;
-    double longitude;
 
-    String city;
-    String postalCode;
 
     String UserEmail = null;
     final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
+
+    private com.mapps.seproject.TrackGPS gps;
+    double longitude;
+    double latitude;
+    String city;
+    String postalCode;
 
 
 

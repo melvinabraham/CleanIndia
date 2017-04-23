@@ -65,6 +65,12 @@ public class CameraFragment extends Fragment {
     FirebaseUser user;
     FirebaseAuth firebaseAuth;
 
+    private com.mapps.seproject.TrackGPS gps;
+    double longitude;
+    double latitude;
+    String city;
+    String postalCode;
+
 
 
     @Override
@@ -136,6 +142,23 @@ public class CameraFragment extends Fragment {
         if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 uploadFile();
+                gps = new TrackGPS(getActivity());
+
+
+                if(gps.canGetLocation()){
+
+
+                    longitude = gps.getLongitude();
+                    latitude = gps .getLatitude();
+                    city = gps.getCity();
+                    postalCode = gps.getPostalCode();
+                    Toast.makeText(getActivity(),"Longitude:"+Double.toString(longitude)+"\nLatitude:"+Double.toString(latitude)+"\nCity:"+city+"\nPostal:"+postalCode,Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+
+                    gps.showSettingsAlert();
+                }
             } else if (resultCode == RESULT_CANCELED) {
                 // user cancelled Image capture
                 Toast.makeText(getActivity(),
