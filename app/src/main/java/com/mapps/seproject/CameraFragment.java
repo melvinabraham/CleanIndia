@@ -328,6 +328,7 @@ public class CameraFragment extends Fragment {
             StorageReference riversRef = mStorageRef.child("images/"+ timeStamp+"pic.jpg");
             riversRef.putFile(imageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @SuppressWarnings("VisibleForTests")
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             //if the upload is successfull
