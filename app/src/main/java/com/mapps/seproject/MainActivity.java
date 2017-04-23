@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,11 +37,26 @@ public class MainActivity extends AppCompatActivity {
 
     int flag = 0;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("message");
+
+    DatabaseReference databaseReference;
+
     String userId;
     String UserEmail = null;
     static String location = "Not Updated";
     static String complaint = "Not Updated";
+
+    String UID="";
+
+    int flags = 0;
+
+    public static int ids;
+    String image="";
+    //   String TimeStamp = "";
+    String URL = "";
+    String profilePic="http://api.androidhive.info/feed/img/ar.jpg";
+    String status = "";
+    String UserName = "";
+    FirebaseUser firebaseUser;
 
 
     @Override
@@ -72,9 +88,11 @@ public class MainActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         final String data = firebaseAuth.getCurrentUser().getEmail();
+        firebaseUser = firebaseAuth.getCurrentUser();
 
         final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
 
+        databaseReference = FirebaseDatabase.getInstance().getReference("feed");
         /*
         userId = mDatabase.push().getKey();
         User user = new User(data);
@@ -122,6 +140,38 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 System.out.println("The re  ad failed" + databaseError.getMessage());
+
+            }
+        });
+
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+
+                //       UserName = getname.getText().toString();
+
+                if(flags == 0)   {
+                    ids = (int) dataSnapshot.child("feed").getChildrenCount();
+
+                    Long tsLong = System.currentTimeMillis()/1000;
+                    UID = firebaseUser.getUid();
+                    final String TimeStamp = tsLong.toString();
+
+
+
+
+                    Feed feed = new Feed(ids,UserName,image,status,profilePic,TimeStamp,URL);
+                    databaseReference.child(UID).child("feed").child(String.valueOf(ids)).setValue(feed);
+                    flags = 1;
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });

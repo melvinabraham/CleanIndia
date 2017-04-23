@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Cache;
 import com.android.volley.Request;
@@ -43,13 +44,15 @@ public class UserActivityFragment extends Fragment  {
 
     Button bSignOut;
 
+    FirebaseUser firebaseUser;
     FirebaseUser user;
     FirebaseAuth firebaseAuth;
 
     private ListView listView;
     private FeedListAdapter listAdapter;
     private List<FeedItem> feedItems;
-    private String URL_FEED = "https://se-project-4a6c6.firebaseapp.com/feeds/feeds.json";
+    private String URL_FEED;
+    String UID;
 
     View view;
 
@@ -61,6 +64,11 @@ public class UserActivityFragment extends Fragment  {
         view = inflater.inflate(R.layout.fragment_user_activity, container, false);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        UID = firebaseUser.getUid();
+        Toast.makeText(getActivity().getApplicationContext(),UID,Toast.LENGTH_LONG).show();
+
+        URL_FEED = "https://se-project-4a6c6.firebaseio.com/feed/"+UID+"/.json?auth=amEmrcvLUpmPjPlRnhinnkbWjbcLrKhPuLcBdV9i";
 
 
         if(firebaseAuth.getCurrentUser() == null)   {                               // Incase the user hasnt logged in
@@ -76,17 +84,7 @@ public class UserActivityFragment extends Fragment  {
 
 
 
-        bSignOut = (Button) view.findViewById(R.id.bSignOut);
-        bSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               // Log.i("Singout","Clicked");
-                    firebaseAuth.signOut();
-                    getActivity().finish();
-                    startActivity(new Intent(getActivity().getApplicationContext(),LoginActivity.class));
 
-            }
-        });
 
         listView = (ListView) view.findViewById(R.id.lists);
 

@@ -28,6 +28,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -62,7 +67,7 @@ public class CameraFragment extends Fragment {
     StorageReference mStorageRef;
 
 
-    FirebaseUser user;
+    FirebaseUser firebaseUser;
     FirebaseAuth firebaseAuth;
 
     private com.mapps.seproject.TrackGPS gps;
@@ -70,6 +75,12 @@ public class CameraFragment extends Fragment {
     double latitude;
     String city;
     String postalCode;
+
+    final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("feed");
+
+    String UID="";
+    int flag = 0;
+
 
 
 
@@ -79,6 +90,10 @@ public class CameraFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_camera, container, false);
         firebaseAuth = FirebaseAuth.getInstance();
+
+        firebaseUser = firebaseAuth.getCurrentUser();
+        UID = firebaseUser.getUid();
+
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
         btnCapturePicture = (Button) view.findViewById(R.id.btnCapturePicture);
@@ -227,12 +242,13 @@ public class CameraFragment extends Fragment {
             progressDialog.setTitle("Uploading");
             progressDialog.show();
 
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
-                    Locale.getDefault()).format(new Date());
+            Long tsLong = System.currentTimeMillis()/1000;
+            final String timeStamp = tsLong.toString();
 
             StorageReference riversRef = mStorageRef.child("images/"+ timeStamp+"pic.jpg");
             riversRef.putFile(fileUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @SuppressWarnings("VisibleForTests")
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             //if the upload is successfull
@@ -241,6 +257,31 @@ public class CameraFragment extends Fragment {
 
                             //and displaying a success toast
                             Toast.makeText(getActivity().getBaseContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
+                            final Uri downloadUri = taskSnapshot.getDownloadUrl();
+                            final String downloadUrl = downloadUri.toString();
+
+                            databaseReference.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+
+                                    if(flag == 0) {
+
+
+                                        databaseReference.child(UID).child("feed").child(String.valueOf(MainActivity.ids)).child("image").setValue(downloadUrl);
+                                        databaseReference.child(UID).child("feed").child(String.valueOf(MainActivity.ids)).child("timeStamp").setValue(timeStamp);
+                                        flag = 1;
+                                    }
+
+                                }
+
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -281,8 +322,8 @@ public class CameraFragment extends Fragment {
             progressDialog.setTitle("Uploading");
             progressDialog.show();
 
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
-                    Locale.getDefault()).format(new Date());
+            Long tsLong = System.currentTimeMillis()/1000;
+            final String timeStamp = tsLong.toString();
 
             StorageReference riversRef = mStorageRef.child("images/"+ timeStamp+"pic.jpg");
             riversRef.putFile(imageUri)
@@ -295,6 +336,27 @@ public class CameraFragment extends Fragment {
 
                             //and displaying a success toast
                             Toast.makeText(getActivity().getBaseContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
+                            final Uri downloadUri = taskSnapshot.getDownloadUrl();
+                            final String downloadUrl = downloadUri.toString();
+
+                            databaseReference.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                    if(flag == 0) {
+
+
+                                        databaseReference.child(UID).child("feed").child(String.valueOf(MainActivity.ids)).child("image").setValue(downloadUrl);
+                                        databaseReference.child(UID).child("feed").child(String.valueOf(MainActivity.ids)).child("timeStamp").setValue(timeStamp);
+                                        flag = 1;
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {

@@ -97,14 +97,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
 
                                 Toast.makeText(RegisterActivity.this, "Registered Successfuly", Toast.LENGTH_SHORT).show();
-                                progress.hide();
+                                progress.dismiss();
 
 
                             } else {
 
 
                                 Toast.makeText(RegisterActivity.this, "Failed to Register", Toast.LENGTH_SHORT).show();
-                                progress.hide();
+                                progress.dismiss();
                                 //task.getException().getMessage();
 
                             }
