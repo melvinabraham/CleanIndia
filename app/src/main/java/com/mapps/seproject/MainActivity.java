@@ -9,6 +9,7 @@ import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     FirebaseAuth firebaseAuth;
-
+    EditText getname;
     int flag = 0;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("message");
@@ -50,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
         mDatabase.child(userId).setValue(user);
 
 */
-        mDatabase.addValueEventListener(new ValueEventListener() {
+            getname = RegisterActivity.name;
+           mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -79,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 if(flag == 0)   {
 
                     userId = mDatabase.push().getKey();
-                    User user = new User(data);
+                    User user = new User(data,getname.getText().toString()); 
                     mDatabase.child(userId).setValue(user);
                     Log.e("E","new");
                 }

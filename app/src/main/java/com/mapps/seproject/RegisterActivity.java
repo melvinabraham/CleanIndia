@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
 
+    static EditText name;
     EditText email;
     EditText password;
     Button b;
@@ -84,7 +85,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         progress.setMessage("Registering");                                                      // Progress Bar
         progress.show();
 
-
+        name = (EditText) findViewById(R.id.etName);
         try {
 
             firebaseAuth.createUserWithEmailAndPassword(mail, pass)                                    // Create New Entry

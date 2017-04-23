@@ -6,7 +6,7 @@ package com.mapps.seproject;
 public class User   {
 
 
-
+    public String name;
     public String email;
 
 
@@ -16,9 +16,10 @@ public class User   {
 
     }
 
-    public User(String email)   {
+    public User(String email,String name)   {
 
         this.email = email;
+        this.name = name;
 
     }
 
