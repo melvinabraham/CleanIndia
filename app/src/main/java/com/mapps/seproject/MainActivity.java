@@ -35,10 +35,13 @@ public class MainActivity extends AppCompatActivity {
     FragmentTransaction fragmentTransaction;
     FirebaseAuth firebaseAuth;
 
+    static int  individualIds;
+
     int flag = 0;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     DatabaseReference databaseReference;
+    EditText getname;
 
     String userId;
     String UserEmail = null;
@@ -151,20 +154,23 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                //       UserName = getname.getText().toString();
+            //           UserName = getname.getText().toString();
 
                 if(flags == 0)   {
                     ids = (int) dataSnapshot.child("feed").getChildrenCount();
 
                     Long tsLong = System.currentTimeMillis()/1000;
                     UID = firebaseUser.getUid();
+
+                    individualIds = (int) dataSnapshot.child("feed").child(UID).child("feed").getChildrenCount();
                     final String TimeStamp = tsLong.toString();
 
 
 
 
-                    Feed feed = new Feed(ids,UserName,image,status,profilePic,TimeStamp,URL);
-                    databaseReference.child(UID).child("feed").child(String.valueOf(ids)).setValue(feed);
+                    Feed feed = new Feed(ids,RegisterActivity.name.getText().toString(),image,status,profilePic,TimeStamp,URL);
+                    databaseReference.child(UID).child("feed").child(String.valueOf(individualIds)).setValue(feed);
+                    databaseReference.child("feed").child(String.valueOf(ids)).setValue(feed);
                     flags = 1;
 
                 }

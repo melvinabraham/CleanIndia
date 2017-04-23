@@ -269,8 +269,10 @@ public class CameraFragment extends Fragment {
                                     if(flag == 0) {
 
 
-                                        databaseReference.child(UID).child("feed").child(String.valueOf(MainActivity.ids)).child("image").setValue(downloadUrl);
-                                        databaseReference.child(UID).child("feed").child(String.valueOf(MainActivity.ids)).child("timeStamp").setValue(timeStamp);
+                                        databaseReference.child(UID).child("feed").child(String.valueOf(MainActivity.individualIds)).child("image").setValue(downloadUrl);
+                                        databaseReference.child(UID).child("feed").child(String.valueOf(MainActivity.individualIds)).child("timeStamp").setValue(timeStamp);
+                                        databaseReference.child("feed").child(String.valueOf(MainActivity.ids)).child("image").setValue(downloadUrl);
+                                        databaseReference.child("feed").child(String.valueOf(MainActivity.ids)).child("timeStamp").setValue(timeStamp);
                                         flag = 1;
                                     }
 
@@ -347,8 +349,10 @@ public class CameraFragment extends Fragment {
                                     if(flag == 0) {
 
 
-                                        databaseReference.child(UID).child("feed").child(String.valueOf(MainActivity.ids)).child("image").setValue(downloadUrl);
-                                        databaseReference.child(UID).child("feed").child(String.valueOf(MainActivity.ids)).child("timeStamp").setValue(timeStamp);
+                                        databaseReference.child(UID).child("feed").child(String.valueOf(MainActivity.individualIds)).child("image").setValue(downloadUrl);
+                                        databaseReference.child(UID).child("feed").child(String.valueOf(MainActivity.individualIds)).child("timeStamp").setValue(timeStamp);
+                                        databaseReference.child("feed").child(String.valueOf(MainActivity.ids)).child("image").setValue(downloadUrl);
+                                        databaseReference.child("feed").child(String.valueOf(MainActivity.ids)).child("timeStamp").setValue(timeStamp);
                                         flag = 1;
                                     }
                                 }
