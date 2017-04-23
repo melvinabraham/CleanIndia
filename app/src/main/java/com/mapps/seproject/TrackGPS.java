@@ -19,6 +19,14 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -33,6 +41,8 @@ public class TrackGPS extends Service implements LocationListener {
 
     boolean checkGPS = false;
 
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    final String data = firebaseAuth.getCurrentUser().getEmail();
 
     boolean checkNetwork = false;
 
@@ -45,8 +55,8 @@ public class TrackGPS extends Service implements LocationListener {
     String city;
     String postalCode;
 
-
-
+    String UserEmail = null;
+    final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
 
 
 
@@ -62,80 +72,50 @@ public class TrackGPS extends Service implements LocationListener {
         getLocation();
     }
 
-    private Location getLocation() {
+        private Location getLocation() {
 
-        try {
-            locationManager = (LocationManager) mContext
-                    .getSystemService(LOCATION_SERVICE);
+            try {
+                locationManager = (LocationManager) mContext
+                        .getSystemService(LOCATION_SERVICE);
 
-            // getting GPS status
-            checkGPS = locationManager
-                    .isProviderEnabled(LocationManager.GPS_PROVIDER);
+                // getting GPS status
+                checkGPS = locationManager
+                        .isProviderEnabled(LocationManager.GPS_PROVIDER);
 
 
 
-            // getting network status
-            checkNetwork = locationManager
-                    .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+                // getting network status
+                checkNetwork = locationManager
+                        .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-            if (!checkGPS && !checkNetwork) {
-                Toast.makeText(mContext, "No Service Provider Available", Toast.LENGTH_SHORT).show();
-            } else {
-                this.canGetLocation = true;
-                // First get location from Network Provider
-                if (checkNetwork) {
-                    //Toast.makeText(mContext, "Network", Toast.LENGTH_SHORT).show();
+                if (!checkGPS && !checkNetwork) {
+                    Toast.makeText(mContext, "No Service Provider Available", Toast.LENGTH_SHORT).show();
+                } else {
+                    this.canGetLocation = true;
+                    // First get location from Network Provider
+                    if (checkNetwork) {
+                        //Toast.makeText(mContext, "Network", Toast.LENGTH_SHORT).show();
 
-                    try {
-                        locationManager.requestLocationUpdates(
-                                LocationManager.NETWORK_PROVIDER,1000,0, this);
-                        Log.d("Network", "Network");
-                        if (locationManager != null) {
-                            loc = locationManager
-                                    .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        try {
+                            locationManager.requestLocationUpdates(
+                                    LocationManager.NETWORK_PROVIDER,1000,0, this);
+                            Log.d("Network", "Network");
+                            if (locationManager != null) {
+                                loc = locationManager
+                                        .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-                        }
+                            }
 
-                        if (loc != null) {
-                            Toast.makeText(mContext,"Gps enabled",Toast.LENGTH_SHORT).show();
-
-                            latitude = loc.getLatitude();
-                            longitude = loc.getLongitude();
-                            Geocoder geocoder= new Geocoder(mContext,Locale.getDefault());
-                            List<Address> addresses;
-
-                            addresses = geocoder.getFromLocation(latitude, longitude, 1);
-                          //  String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-                            city = addresses.get(0).getLocality();
-                            //String state = addresses.get(0).getAdminArea();
-                            //String country = addresses.get(0).getCountryName();
-                            postalCode = addresses.get(0).getPostalCode();
-                            //String knownName = addresses.get(0).getFeatureName();
-                        }
-                    }
-                    catch(SecurityException e){
-
-                    }
-                }
-            }
-            // if GPS Enabled get lat/long using GPS Services
-            if (checkGPS) {
-                if (loc == null) {
-                    try {
-                        locationManager.requestLocationUpdates(
-                                LocationManager.GPS_PROVIDER,1000,0, this);
-                        Log.d("GPS Enabled", "GPS Enabled");
-                        if (locationManager != null) {
-                            loc = locationManager
-                                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
                             if (loc != null) {
+                                Toast.makeText(mContext,"Gps enabled",Toast.LENGTH_SHORT).show();
+
                                 latitude = loc.getLatitude();
                                 longitude = loc.getLongitude();
                                 Geocoder geocoder= new Geocoder(mContext,Locale.getDefault());
                                 List<Address> addresses;
 
                                 addresses = geocoder.getFromLocation(latitude, longitude, 1);
-                                //  String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                              //  String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
                                 city = addresses.get(0).getLocality();
                                 //String state = addresses.get(0).getAdminArea();
                                 //String country = addresses.get(0).getCountryName();
@@ -143,20 +123,71 @@ public class TrackGPS extends Service implements LocationListener {
                                 //String knownName = addresses.get(0).getFeatureName();
                             }
                         }
+                        catch(SecurityException e){
 
-                    } catch (SecurityException e) {
-
+                        }
                     }
                 }
+                // if GPS Enabled get lat/long using GPS Services
+                if (checkGPS) {
+                    if (loc == null) {
+                        try {
+                            locationManager.requestLocationUpdates(
+                                    LocationManager.GPS_PROVIDER,1000,0, this);
+                            Log.d("GPS Enabled", "GPS Enabled");
+                            if (locationManager != null) {
+                                loc = locationManager
+                                        .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                                if (loc != null) {
+                                    latitude = loc.getLatitude();
+                                    longitude = loc.getLongitude();
+                                    Geocoder geocoder= new Geocoder(mContext,Locale.getDefault());
+                                    List<Address> addresses;
+
+                                    addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                                    //  String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                                    city = addresses.get(0).getLocality();
+                                    mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+
+                                                UserEmail = snapshot.child("email").toString().split("value =")[1].split(" ")[1].replaceAll("\\s+","");
+                                                if(UserEmail.equals(data))  {
+
+                                                    snapshot.getRef().child("location").setValue(city);
+                                                    break;
+                                                }
+
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+
+                                    //String state = addresses.get(0).getAdminArea();
+                                    //String country = addresses.get(0).getCountryName();
+                                    postalCode = addresses.get(0).getPostalCode();
+                                    //String knownName = addresses.get(0).getFeatureName();
+                                }
+                            }
+
+                        } catch (SecurityException e) {
+
+                        }
+                    }
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            return loc;
         }
-
-        return loc;
-    }
 
     public double getLongitude() {
         if (loc != null) {

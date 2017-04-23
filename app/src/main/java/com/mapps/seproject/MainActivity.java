@@ -35,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference myRef = database.getReference("message");
     String userId;
     String UserEmail = null;
+    static String location = "Not Updated";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 if(flag == 0)   {
 
                     userId = mDatabase.push().getKey();
-                    User user = new User(data,getname.getText().toString()); 
+                    User user = new User(data,getname.getText().toString(),location);
                     mDatabase.child(userId).setValue(user);
                     Log.e("E","new");
                 }
