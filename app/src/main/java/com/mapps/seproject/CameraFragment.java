@@ -76,7 +76,7 @@ public class CameraFragment extends Fragment {
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
         btnCapturePicture = (Button) view.findViewById(R.id.btnCapturePicture);
-        signOut = (Button) view.findViewById(R.id.button3);
+        signOut = (Button) view.findViewById(R.id.bSignOut);
         choose_image = (Button) view.findViewById(R.id.choose_image);
         btnCapturePicture.setOnClickListener(new View.OnClickListener() {
 
@@ -110,7 +110,7 @@ public class CameraFragment extends Fragment {
     @Override
     public void onViewCreated(View view,Bundle savedInstanceState){
         super.onViewCreated(view,savedInstanceState);
-        getActivity().setTitle("Menu1");
+        getActivity().setTitle("Camera Utilities");
     }
 
     private boolean isDeviceSupportCamera() {

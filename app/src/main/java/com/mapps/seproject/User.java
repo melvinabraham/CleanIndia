@@ -9,6 +9,7 @@ public class User   {
     public String name;
     public String email;
     public String location;
+    public String complaint;
 
 
     public User()   {
@@ -16,11 +17,12 @@ public class User   {
 
     }
 
-    public User(String email,String name,String location)   {
+    public User(String email,String name,String location,String complaint)   {
 
         this.email = email;
         this.name = name;
         this.location = location;
+        this.complaint = complaint;
 
     }
 

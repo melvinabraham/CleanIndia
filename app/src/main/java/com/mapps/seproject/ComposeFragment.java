@@ -29,6 +29,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -51,9 +57,10 @@ public class ComposeFragment extends Fragment implements View.OnClickListener{
     Button bComposeMail;
     Spinner dropdown;
     TextView emailText;
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    final String data = firebaseAuth.getCurrentUser().getEmail();
 
-
-
+    String UserEmail = null;
     private Uri imageUri = CameraFragment.images;
 
 
@@ -62,12 +69,14 @@ public class ComposeFragment extends Fragment implements View.OnClickListener{
     Button upload;
     //private static int RESULT_LOAD_IMAGE = 1;
 
-    private Button b_get;
+
+
     private com.mapps.seproject.TrackGPS gps;
     double longitude;
     double latitude;
     String city;
     String postalCode;
+    final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
 
 
 
@@ -82,12 +91,12 @@ public class ComposeFragment extends Fragment implements View.OnClickListener{
 
         bComposeMail = (Button) view.findViewById(R.id.bComposeMail);
         emailText = (TextView) view.findViewById(R.id.tvEmailMessage);
-        b_get = (Button) view.findViewById(R.id.button2);
+        //b_get = (Button) view.findViewById(R.id.button2);
 
 
 
         bComposeMail.setOnClickListener(this);
-        b_get.setOnClickListener(this);
+        //b_get.setOnClickListener(this);
         return view;
     }
 
@@ -101,6 +110,7 @@ public class ComposeFragment extends Fragment implements View.OnClickListener{
 
     public void composeEmail()  {
 
+
         Log.i("Sending Email","");
         String[] TO;
         if (flag == 0) {
@@ -113,7 +123,7 @@ public class ComposeFragment extends Fragment implements View.OnClickListener{
         }
         String [] CC = {""};
 
-        String mailText = emailText.getText().toString();
+        final String mailText = emailText.getText().toString();
 
 
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
@@ -136,10 +146,35 @@ public class ComposeFragment extends Fragment implements View.OnClickListener{
 
             startActivityForResult(Intent.createChooser(emailIntent,"Send Mail..."),2);
 
+            mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+
+                        UserEmail = snapshot.child("email").toString().split("value =")[1].split(" ")[1].replaceAll("\\s+","");
+                        if(UserEmail.equals(data))  {
+
+                            snapshot.getRef().child("complaint").setValue(mailText);
+                            break;
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
+
+
+
             Log.i("Finished","");
         }
 
-        catch (android.content.ActivityNotFoundException ex)    {
+        catch (android.content.ActivityNotFoundException e)    {
 
             Toast.makeText(getActivity().getBaseContext(), "There is no email client installed.", Toast.LENGTH_SHORT).show();
 
@@ -168,26 +203,7 @@ public class ComposeFragment extends Fragment implements View.OnClickListener{
 
 
 
-        //Location
-	    if(v == b_get){
-            gps = new TrackGPS(getActivity());
 
-
-            if(gps.canGetLocation()){
-
-
-                longitude = gps.getLongitude();
-                latitude = gps .getLatitude();
-                city = gps.getCity();
-                postalCode = gps.getPostalCode();
-                Toast.makeText(getActivity(),"Longitude:"+Double.toString(longitude)+"\nLatitude:"+Double.toString(latitude)+"\nCity:"+city+"\nPostal:"+postalCode,Toast.LENGTH_SHORT).show();
-            }
-            else
-            {
-
-                gps.showSettingsAlert();
-            }
-        }
 
 
 

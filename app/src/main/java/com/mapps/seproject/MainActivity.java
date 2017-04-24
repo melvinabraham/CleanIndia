@@ -3,12 +3,16 @@ package com.mapps.seproject;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.annotation.IdRes;
 
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -36,6 +40,29 @@ public class MainActivity extends AppCompatActivity {
     String userId;
     String UserEmail = null;
     static String location = "Not Updated";
+    static String complaint = "Not Updated";
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.sign_out:
+                firebaseAuth.signOut();
+                startActivity(new Intent(this,StartActivty.class));
+
+        }
+
+        return true;
+        }
+
 
 
     @Override
@@ -84,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 if(flag == 0)   {
 
                     userId = mDatabase.push().getKey();
-                    User user = new User(data,getname.getText().toString(),location);
+                    User user = new User(data,getname.getText().toString(),location,complaint);
                     mDatabase.child(userId).setValue(user);
                     Log.e("E","new");
                 }
