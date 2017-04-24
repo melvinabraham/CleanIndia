@@ -66,7 +66,7 @@ public class UserActivityFragment extends Fragment  {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         UID = firebaseUser.getUid();
-        Toast.makeText(getActivity().getApplicationContext(),UID,Toast.LENGTH_LONG).show();
+   //     Toast.makeText(getActivity().getApplicationContext(),UID,Toast.LENGTH_LONG).show();
 
         URL_FEED = "https://se-project-4a6c6.firebaseio.com/feed/"+UID+"/.json?auth=amEmrcvLUpmPjPlRnhinnkbWjbcLrKhPuLcBdV9i";
 
