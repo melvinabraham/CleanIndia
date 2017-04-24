@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,12 +54,15 @@ import static android.app.Activity.RESULT_OK;
 
 public class ComposeFragment extends Fragment implements View.OnClickListener{
 
-    int flag =0;
+
     Button bComposeMail;
     Spinner dropdown;
     TextView emailText;
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     final String data = firebaseAuth.getCurrentUser().getEmail();
+
+    DatabaseReference databaseReference;
+    FirebaseUser firebaseUser;
 
     String UserEmail = null;
     private Uri imageUri = CameraFragment.images;
@@ -68,6 +72,10 @@ public class ComposeFragment extends Fragment implements View.OnClickListener{
     View view;
     Button upload;
     //private static int RESULT_LOAD_IMAGE = 1;
+
+    String UID="";
+    int flag = 0;
+    int flags = 0;
 
 
 
@@ -91,6 +99,11 @@ public class ComposeFragment extends Fragment implements View.OnClickListener{
 
         bComposeMail = (Button) view.findViewById(R.id.bComposeMail);
         emailText = (TextView) view.findViewById(R.id.tvEmailMessage);
+
+        firebaseUser = firebaseAuth.getCurrentUser();
+        UID = firebaseUser.getUid();
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("feed");
 
 
 
@@ -160,6 +173,30 @@ public class ComposeFragment extends Fragment implements View.OnClickListener{
 
                     }
                 }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+
+                    if(flags == 0) {
+
+
+                        databaseReference.child(UID).child("feed").child(String.valueOf(MainActivity.individualIds)).child("status").setValue(mailText);
+                        databaseReference.child("feed").child(String.valueOf(MainActivity.ids)).child("status").setValue(mailText);
+                        flags = 1;
+                    }
+
+                }
+
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
