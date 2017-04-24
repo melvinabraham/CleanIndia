@@ -91,12 +91,12 @@ public class ComposeFragment extends Fragment implements View.OnClickListener{
 
         bComposeMail = (Button) view.findViewById(R.id.bComposeMail);
         emailText = (TextView) view.findViewById(R.id.tvEmailMessage);
-        //b_get = (Button) view.findViewById(R.id.button2);
+
 
 
 
         bComposeMail.setOnClickListener(this);
-        //b_get.setOnClickListener(this);
+
         return view;
     }
 

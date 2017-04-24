@@ -34,7 +34,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-
+        name = (EditText) findViewById(R.id.etName);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -85,7 +85,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         progress.setMessage("Registering");                                                      // Progress Bar
         progress.show();
 
-        name = (EditText) findViewById(R.id.etName);
+
         try {
 
             firebaseAuth.createUserWithEmailAndPassword(mail, pass)                                    // Create New Entry

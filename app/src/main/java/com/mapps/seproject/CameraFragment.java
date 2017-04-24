@@ -60,7 +60,7 @@ public class CameraFragment extends Fragment {
     private Button btnCapturePicture;
     private Button choose_image;
     StorageReference mStorageRef;
-    Button signOut;
+
 
     FirebaseUser user;
     FirebaseAuth firebaseAuth;
@@ -76,7 +76,8 @@ public class CameraFragment extends Fragment {
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
         btnCapturePicture = (Button) view.findViewById(R.id.btnCapturePicture);
-        signOut = (Button) view.findViewById(R.id.bSignOut);
+
+
         choose_image = (Button) view.findViewById(R.id.choose_image);
         btnCapturePicture.setOnClickListener(new View.OnClickListener() {
 
@@ -94,13 +95,6 @@ public class CameraFragment extends Fragment {
             }
         });
 
-        signOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                firebaseAuth.signOut();
-                startActivity(new Intent(getActivity(),StartActivty.class));
-            }
-        });
 
 
         return view;

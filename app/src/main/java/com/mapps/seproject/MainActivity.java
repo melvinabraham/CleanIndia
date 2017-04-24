@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     FirebaseAuth firebaseAuth;
-    EditText getname;
+
     int flag = 0;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("message");
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         mDatabase.child(userId).setValue(user);
 
 */
-            getname = RegisterActivity.name;
+
            mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 if(flag == 0)   {
 
                     userId = mDatabase.push().getKey();
-                    User user = new User(data,getname.getText().toString(),location,complaint);
+                    User user = new User(data,RegisterActivity.name.getText().toString(),location,complaint);
                     mDatabase.child(userId).setValue(user);
                     Log.e("E","new");
                 }
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed" + databaseError.getMessage());
+                System.out.println("The re  ad failed" + databaseError.getMessage());
 
             }
         });
