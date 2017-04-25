@@ -54,6 +54,9 @@ import static android.app.Activity.RESULT_OK;
 public class CameraFragment extends Fragment {
 
 
+    String UserEmail = null;
+    final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
+
     private static final String IMAGE_DIRECTORY_NAME = "Hello_Camera";
     View view;
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
@@ -94,6 +97,7 @@ public class CameraFragment extends Fragment {
         firebaseUser = firebaseAuth.getCurrentUser();
         UID = firebaseUser.getUid();
 
+        final String data = firebaseAuth.getCurrentUser().getEmail();
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
         btnCapturePicture = (Button) view.findViewById(R.id.btnCapturePicture);
@@ -152,7 +156,7 @@ public class CameraFragment extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, final Intent data) {
         // if the result is capturing Image
         if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
@@ -167,7 +171,35 @@ public class CameraFragment extends Fragment {
                     latitude = gps .getLatitude();
                     city = gps.getCity();
                     postalCode = gps.getPostalCode();
-                    Toast.makeText(getActivity(),"Longitude:"+Double.toString(longitude)+"\nLatitude:"+Double.toString(latitude)+"\nCity:"+city+"\nPostal:"+postalCode,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), city, Toast.LENGTH_SHORT).show();
+    /*                mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+
+                                UserEmail = snapshot.child("email").toString().split("value =")[1].split(" ")[1].replaceAll("\\s+","");
+                                if(UserEmail.equals(data))  {
+
+                                    snapshot.getRef().child("location").setValue(city);
+                                    Toast.makeText(getActivity(), UserEmail, Toast.LENGTH_SHORT).show();
+                                    Log.e("Location:",city);
+
+                                    break;
+                                }
+
+
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });*/
+
+                    // Toast.makeText(getActivity(),"Longitude:"+Double.toString(longitude)+"\nLatitude:"+Double.toString(latitude)+"\nCity:"+city+"\nPostal:"+postalCode,Toast.LENGTH_SHORT).show();
                 }
                 else
                 {

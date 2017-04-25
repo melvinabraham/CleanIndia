@@ -123,6 +123,35 @@ public class TrackGPS extends Service implements LocationListener {
                                 //String country = addresses.get(0).getCountryName();
                                 postalCode = addresses.get(0).getPostalCode();
                                 //String knownName = addresses.get(0).getFeatureName();
+
+                        //        addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                                //  String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                        //        city = addresses.get(0).getLocality();
+                                mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+
+                                            UserEmail = snapshot.child("email").toString().split("value =")[1].split(" ")[1].replaceAll("\\s+","");
+                                            if(UserEmail.equals(data))  {
+
+                                                snapshot.getRef().child("location").setValue(city);
+                                                Log.e("Location:",city);
+
+                                                break;
+                                            }
+
+
+
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
                             }
                         }
                         catch(SecurityException e){
@@ -145,6 +174,7 @@ public class TrackGPS extends Service implements LocationListener {
                                     longitude = loc.getLongitude();
                                     Geocoder geocoder= new Geocoder(mContext,Locale.getDefault());
                                     List<Address> addresses;
+                                    int flags = 0;
 
                                     addresses = geocoder.getFromLocation(latitude, longitude, 1);
                                     //  String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
@@ -158,10 +188,15 @@ public class TrackGPS extends Service implements LocationListener {
                                                 if(UserEmail.equals(data))  {
 
                                                     snapshot.getRef().child("location").setValue(city);
+                                                    Log.e("Location:",city);
+
                                                     break;
                                                 }
 
+
+
                                             }
+
                                         }
 
                                         @Override
